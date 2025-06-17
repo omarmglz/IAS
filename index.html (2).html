@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>International Aftermarket Summit - Panel Interactivo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+        
+        .event-title {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: #e8f4fd;
+        }
+        
+        .panel-title {
+            font-size: 1rem;
+            color: #b8d4ea;
+            font-style: italic;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .poll-section, .questions-section {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #ffd700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+        
+        .options-grid {
+            display: grid;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .option {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+        
+        .option:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #ffd700;
+            transform: translateY(-2px);
+        }
+        
+        .option.selected {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #ffd700;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+        }
+        
+        .textarea {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 100px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .textarea:focus {
+            outline: none;
+            border-color: #ffd700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+        
+        .btn {
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #1e3c72;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .success-message {
+            background: rgba(40, 167, 69, 0.2);
+            border: 1px solid rgba(40, 167, 69, 0.5);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .icon {
+            font-size: 1.2rem;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffd700;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #b8d4ea;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header {
+                padding: 15px;
+            }
+            
+            .logo {
+                font-size: 1.5rem;
+            }
+            
+            .event-title {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🚗 International Aftermarket Summit</div>
+            <div class="event-title">Unlocking Growth: Opportunities in the Latin American Automotive Aftermarket</div>
+            <div class="panel-title">Centro Citibanamex • 15 de Julio, 2025 • 11:30-12:00 hrs</div>
+        </div>
+        
+        <div class="main-content">
+            <div class="poll-section">
+                <h2 class="section-title">
+                    <span class="icon">📊</span>
+                    Encuesta Interactiva
+                </h2>
+                <div class="question-text">
+                    <strong>¿Qué tendencia impactará más al aftermarket en los próximos años?</strong>
+                </div>
+                
+                <div class="options-grid" id="pollOptions">
+                    <div class="option" data-value="digitalizacion">
+                        <strong>🔄 Transformación Digital</strong><br>
+                        <small>Plataformas e-commerce, apps móviles, automatización</small>
+                    </div>
+                    <div class="option" data-value="electrificar">
+                        <strong>⚡ Electrificación Vehicular</strong><br>
+                        <small>Vehículos híbridos y eléctricos, nuevas tecnologías</small>
+                    </div>
+                    <div class="option" data-value="supply-chain">
+                        <strong>🌐 Reconfiguración de Supply Chain</strong><br>
+                        <small>Nearshoring, diversificación de proveedores</small>
+                    </div>
+                    <div class="option" data-value="ia-predictivo">
+                        <strong>🤖 IA y Mantenimiento Predictivo</strong><br>
+                        <small>Inteligencia artificial, diagnósticos avanzados</small>
+                    </div>
+                    <div class="option" data-value="sostenibilidad">
+                        <strong>🌱 Sostenibilidad y Economía Circular</strong><br>
+                        <small>Reciclaje, refabricación, productos eco-friendly</small>
+                    </div>
+                    <div class="option" data-value="data-analytics">
+                        <strong>📈 Big Data y Analytics</strong><br>
+                        <small>Análisis de datos, personalización, insights</small>
+                    </div>
+                </div>
+                
+                <button class="btn" id="submitPoll" disabled>Enviar Respuesta</button>
+                <div id="pollSuccess" style="display: none;"></div>
+            </div>
+            
+            <div class="questions-section">
+                <h2 class="section-title">
+                    <span class="icon">❓</span>
+                    Preguntas para los Panelistas
+                </h2>
+                <div class="question-text">
+                    Envía tu pregunta para Juan Cantarella (AFAC), Carlos Straetger (Super Repuestos), Carlos Locoselli (STP Auto Parts) y Chip Carlson (CIMA International)
+                </div>
+                
+                <textarea 
+                    class="textarea" 
+                    id="userQuestion" 
+                    placeholder="Escribe tu pregunta aquí... Por ejemplo: ¿Cómo ven el impacto de los aranceles en la importación de autopartes? ¿Qué estrategias digitales han sido más efectivas?"
+                    maxlength="500">
+                </textarea>
+                
+                <div style="text-align: right; margin: 10px 0; color: #b8d4ea; font-size: 0.9rem;">
+                    <span id="charCount">0</span>/500 caracteres
+                </div>
+                
+                <button class="btn" id="submitQuestion">Enviar Pregunta</button>
+                <div id="questionSuccess" style="display: none;"></div>
+            </div>
+            
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="pollCount">0</div>
+                    <div class="stat-label">Respuestas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="questionCount">0</div>
+                    <div class="stat-label">Preguntas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="participantCount">0</div>
+                    <div class="stat-label">Participantes</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simulated data storage (in real implementation, this would connect to a backend)
+        let pollData = {
+            digitalizacion: 0,
+            electrificar: 0,
+            'supply-chain': 0,
+            'ia-predictivo': 0,
+            sostenibilidad: 0,
+            'data-analytics': 0
+        };
+        
+        let questions = [];
+        let totalParticipants = 0;
+        let userHasVoted = false;
+        let userHasAskedQuestion = false;
+        
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            setupPollHandlers();
+            setupQuestionHandlers();
+            updateStats();
+            simulateRealTimeActivity();
+        });
+        
+        function setupPollHandlers() {
+            const options = document.querySelectorAll('.option');
+            const submitBtn = document.getElementById('submitPoll');
+            let selectedOption = null;
+            
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    if (userHasVoted) return;
+                    
+                    // Remove previous selection
+                    options.forEach(opt => opt.classList.remove('selected'));
+                    
+                    // Add selection to clicked option
+                    this.classList.add('selected');
+                    selectedOption = this.dataset.value;
+                    
+                    // Enable submit button
+                    submitBtn.disabled = false;
+                });
+            });
+            
+            submitBtn.addEventListener('click', function() {
+                if (selectedOption && !userHasVoted) {
+                    submitPollResponse(selectedOption);
+                }
+            });
+        }
+        
+        function setupQuestionHandlers() {
+            const textarea = document.getElementById('userQuestion');
+            const charCount = document.getElementById('charCount');
+            const submitBtn = document.getElementById('submitQuestion');
+            
+            textarea.addEventListener('input', function() {
+                const count = this.value.length;
+                charCount.textContent = count;
+                
+                if (count > 450) {
+                    charCount.style.color = '#ff6b6b';
+                } else {
+                    charCount.style.color = '#b8d4ea';
+                }
+            });
+            
+            submitBtn.addEventListener('click', function() {
+                const question = textarea.value.trim();
+                if (question && !userHasAskedQuestion) {
+                    submitQuestion(question);
+                }
+            });
+        }
+        
+        function submitPollResponse(option) {
+            pollData[option]++;
+            userHasVoted = true;
+            totalParticipants++;
+            
+            // Disable all options
+            const options = document.querySelectorAll('.option');
+            options.forEach(opt => {
+                opt.style.cursor = 'not-allowed';
+                opt.style.opacity = '0.7';
+            });
+            
+            // Disable submit button
+            const submitBtn = document.getElementById('submitPoll');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Respuesta Enviada';
+            
+            // Show success message
+            const successDiv = document.getElementById('pollSuccess');
+            successDiv.innerHTML = `
+                <div class="success-message">
+                    ✅ <strong>¡Gracias por tu participación!</strong><br>
+                    Tu voto ha sido registrado correctamente.
+                </div>
+            `;
+            successDiv.style.display = 'block';
+            
+            updateStats();
+        }
+        
+        function submitQuestion(question) {
+            questions.push({
+                id: Date.now(),
+                question: question,
+                timestamp: new Date().toLocaleTimeString()
+            });
+            
+            userHasAskedQuestion = true;
+            
+            // Clear textarea and disable
+            const textarea = document.getElementById('userQuestion');
+            textarea.value = '';
+            textarea.disabled = true;
+            textarea.placeholder = 'Pregunta enviada correctamente';
+            
+            // Disable submit button
+            const submitBtn = document.getElementById('submitQuestion');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Pregunta Enviada';
+            
+            // Show success message
+            const successDiv = document.getElementById('questionSuccess');
+            successDiv.innerHTML = `
+                <div class="success-message">
+                    ✅ <strong>¡Pregunta enviada exitosamente!</strong><br>
+                    Los moderadores la revisarán para el panel.
+                </div>
+            `;
+            successDiv.style.display = 'block';
+            
+            updateStats();
+        }
+        
+        function updateStats() {
+            const totalPollResponses = Object.values(pollData).reduce((a, b) => a + b, 0);
+            
+            document.getElementById('pollCount').textContent = totalPollResponses;
+            document.getElementById('questionCount').textContent = questions.length;
+            document.getElementById('participantCount').textContent = Math.max(totalPollResponses, questions.length);
+        }
+        
+        // Simulate real-time activity from other participants
+        function simulateRealTimeActivity() {
+            setInterval(() => {
+                if (Math.random() < 0.3) { // 30% chance every 5 seconds
+                    const options = Object.keys(pollData);
+                    const randomOption = options[Math.floor(Math.random() * options.length)];
+                    pollData[randomOption]++;
+                    
+                    updateStats();
+                }
+                
+                if (Math.random() < 0.2) { // 20% chance every 5 seconds
+                    const sampleQuestions = [
+                        "¿Cómo impactan los aranceles en los costos de importación?",
+                        "¿Qué papel juega la digitalización en la cadena de suministro?",
+                        "¿Cuáles son los principales desafíos logísticos en LATAM?",
+                        "¿Cómo está evolucionando el canal de distribución digital?"
+                    ];
+                    
+                    const randomQuestion = sampleQuestions[Math.floor(Math.random() * sampleQuestions.length)];
+                    questions.push({
+                        id: Date.now(),
+                        question: randomQuestion,
+                        timestamp: new Date().toLocaleTimeString()
+                    });
+                    
+                    updateStats();
+                }
+            }, 5000);
+        }
+        
+        // Add some initial simulated data
+        setTimeout(() => {
+            pollData.digitalizacion = 12;
+            pollData.electrificar = 8;
+            pollData['supply-chain'] = 15;
+            pollData['ia-predictivo'] = 6;
+            pollData.sostenibilidad = 9;
+            pollData['data-analytics'] = 11;
+            
+            questions = [
+                { id: 1, question: "¿Cómo ven el futuro de los centros de distribución en México?", timestamp: "11:25:30" },
+                { id: 2, question: "¿Qué estrategias están usando para combatir la inflación?", timestamp: "11:26:15" },
+                { id: 3, question: "¿Cuál es el impacto de los vehículos eléctricos en el aftermarket tradicional?", timestamp: "11:27:45" }
+            ];
+            
+            updateStats();
+        }, 2000);
+    </script>
+</body>
+</html>
